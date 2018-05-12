@@ -1,0 +1,24 @@
+{
+    "name": "rugleb/phpgpss",
+    "description": "Modeling of control systems.",
+    "keywords": ["rugleb", "gpss", "modeling", "simulation", "imitation"],
+    "license": "MIT",
+    "type": "library",
+    "homepage": "https://github.com/rugleb/phpGPSS",
+    "authors": [
+        {
+            "name": "Gleb K.",
+            "email": "rugleb@gmail.com"
+        }
+    ],
+    "support": {
+        "email": "rugleb@gmail.com",
+        "issues": "https://github.com/rugleb/phpGPSS/issues"
+    },
+    "require": {
+        "php": "^7.2",
+        "tightenco/collect": "^5.6"
+    },
+    "minimum-stability": "dev",
+    "prefer-stable": true
+}
