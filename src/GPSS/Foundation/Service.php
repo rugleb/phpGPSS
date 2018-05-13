@@ -48,6 +48,14 @@ abstract class Service implements Stringable
     }
 
     /**
+     * Handle input transact.
+     *
+     * @param Transact $transact
+     * @return mixed
+     */
+    abstract public function handle(Transact &$transact);
+
+    /**
      * Get processed transact.
      *
      * @return Transact|null
