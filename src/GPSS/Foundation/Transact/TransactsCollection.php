@@ -28,7 +28,7 @@ class TransactsCollection implements Stringable
     /**
      * TransactsCollection constructor.
      *
-     * @param array|Collection|Transact $transacts    Transacts collection
+     * @param Transact[]|Collection|Transact $transacts    Transacts collection
      *
      * @throws \Exception
      */
@@ -40,7 +40,7 @@ class TransactsCollection implements Stringable
     /**
      * Set new transacts collection.
      *
-     * @param array|Collection|Transact $transacts    Transacts collection
+     * @param Transact[]|Collection|Transact $transacts    Transacts collection
      * @return TransactsCollection
      *
      * @throws \Exception
@@ -74,7 +74,7 @@ class TransactsCollection implements Stringable
     /**
      * Make collection from items.
      *
-     * @param array|Collection|Transact $items    Transacts collection
+     * @param Transact[]|Collection|Transact $items    Transacts collection
      * @return Collection
      */
     protected function makeCollection($items): Collection
@@ -178,6 +178,21 @@ class TransactsCollection implements Stringable
         $this->collection = collect();
 
         return $this;
+    }
+
+    /**
+     * Push all of the given items onto the collection.
+     *
+     * @param TransactsCollection $transacts
+     * @return TransactsCollection
+     *
+     * @throws \Exception
+     */
+    public function concat(TransactsCollection $transacts): TransactsCollection
+    {
+        $collection = $this->collection->concat($transacts->all());
+
+        return new static ($collection);
     }
 
     /**
