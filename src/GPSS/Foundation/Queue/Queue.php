@@ -58,6 +58,21 @@ class Queue implements Stringable
     }
 
     /**
+     * Enter transact if it not in a queue.
+     *
+     * @param Transact $transact
+     * @return Queue
+     */
+    public function enterIfHasNot(Transact $transact): Queue
+    {
+        if (! $this->has($transact)) {
+            $this->enter($transact);
+        }
+
+        return $this;
+    }
+
+    /**
      * Output transact from the queue.
      *
      * @param Transact $transact
