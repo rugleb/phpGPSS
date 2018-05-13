@@ -1,6 +1,6 @@
 <?php
 
-namespace GPSS\Foundation;
+namespace GPSS\Foundation\Service;
 
 use GPSS\Support\Concerns\HasModel;
 use GPSS\Support\Concerns\HasNumber;
@@ -232,6 +232,17 @@ abstract class Service implements Stringable
     public function isFree(): bool
     {
         return ! $this->isBusy();
+    }
+
+    /**
+     * Make new service.
+     *
+     * @param string $service    Service name
+     * @return Service
+     */
+    public static function make(string $service): Service
+    {
+        return new $service;
     }
 
     /**

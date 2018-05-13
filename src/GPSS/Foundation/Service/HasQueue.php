@@ -1,8 +1,8 @@
 <?php
 
-namespace GPSS\Foundation\Queue;
+namespace GPSS\Foundation\Service;
 
-use GPSS\Foundation\Service;
+use GPSS\Foundation\Queue\Queue;
 use GPSS\Foundation\Transact\Transact;
 
 /**
