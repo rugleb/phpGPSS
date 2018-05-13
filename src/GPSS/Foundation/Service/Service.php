@@ -151,7 +151,7 @@ abstract class Service implements Stringable
     public function advance(Transact &$transact): Service
     {
         $this->setTimeOut($transact);
-        // TODO: move Transact to futures
+        $this->getModel()->moveToFutures($transact);
 
         return $this;
     }
@@ -187,7 +187,7 @@ abstract class Service implements Stringable
      */
     public function terminate(Transact $transact): Service
     {
-        // TODO: terminate transact from service
+        $this->getModel()->forget($transact);
 
         return $this;
     }
