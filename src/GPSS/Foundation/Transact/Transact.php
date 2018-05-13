@@ -9,6 +9,7 @@ use Tightenco\Collect\Contracts\Support\Arrayable;
 /**
  * The Transact abstract base class.
  *
+ * Is part of the GPSS\Foundation package.
  * @package GPSS\Foundation\Transact
  */
 abstract class Transact implements Arrayable, Stringable

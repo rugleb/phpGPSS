@@ -193,8 +193,10 @@ class TransactsCollection implements Stringable
     }
 
     /**
-     * @param callable $method
-     * @param array $arguments
+     * Call as collection.
+     *
+     * @param callable $method    Method name
+     * @param array $arguments    Arguments array
      * @return mixed
      */
     public function __call($method, $arguments)
