@@ -22,7 +22,8 @@
     },
     "autoload": {
         "psr-4": {
-            "GPSS\\": "src/GPSS/"
+            "GPSS\\": "src/GPSS/",
+            "App\\": "src/App/"
         }
     },
     "minimum-stability": "dev",
