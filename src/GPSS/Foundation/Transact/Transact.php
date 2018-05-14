@@ -24,12 +24,53 @@ abstract class Transact implements Arrayable, Stringable
     protected $time;
 
     /**
+     * Service class name.
+     *
+     * @var string
+     */
+    protected $handler;
+
+    /**
      * Transact constructor.
      */
     public function __construct()
     {
         $this->time = null;
         $this->number = null;
+        $this->handler = null;
+    }
+
+    /**
+     * Set service class name.
+     *
+     * @param string $serviceName    Service name
+     * @return Transact
+     */
+    public function setHandler(string $serviceName): Transact
+    {
+        $this->handler = $serviceName;
+
+        return $this;
+    }
+
+    /**
+     * Get service class name.
+     *
+     * @return string    Service name.
+     */
+    public function getHandler()
+    {
+        return $this->handler;
+    }
+
+    /**
+     * Determines whether the handler is installed.
+     *
+     * @return bool
+     */
+    public function hasHandler(): bool
+    {
+        return is_string($this->handler);
     }
 
     /**
@@ -66,6 +107,17 @@ abstract class Transact implements Arrayable, Stringable
             $this->number,
             $this->time
         ];
+    }
+
+    /**
+     * Make new transact.
+     *
+     * @param string $transactName    Transact name
+     * @return Transact
+     */
+    public static function make(string $transactName): Transact
+    {
+        return new $transactName;
     }
 
     /**
