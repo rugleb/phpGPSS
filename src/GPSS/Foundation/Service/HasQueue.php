@@ -77,6 +77,8 @@ trait HasQueue
      *
      * @param Transact $transact
      * @return Service
+     *
+     * @throws \Exception
      */
     public function queue(Transact $transact): Service
     {

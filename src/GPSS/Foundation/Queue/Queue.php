@@ -48,6 +48,8 @@ class Queue implements Stringable
      *
      * @param Transact $transact
      * @return Queue
+     *
+     * @throws \Exception
      */
     public function enter(Transact $transact): Queue
     {
@@ -62,6 +64,8 @@ class Queue implements Stringable
      *
      * @param Transact $transact
      * @return Queue
+     *
+     * @throws \Exception
      */
     public function enterIfHasNot(Transact $transact): Queue
     {
