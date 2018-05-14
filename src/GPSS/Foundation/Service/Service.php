@@ -42,7 +42,6 @@ abstract class Service implements Stringable
      */
     public function __construct()
     {
-        $this->model = null;
         $this->number = null;
         $this->transact = null;
     }
@@ -187,7 +186,7 @@ abstract class Service implements Stringable
      */
     public function terminate(Transact $transact): Service
     {
-        $this->getModel()->forget($transact);
+        $this->getModel()->getStorage()->remove($transact);
 
         return $this;
     }
