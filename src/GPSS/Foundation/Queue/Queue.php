@@ -126,7 +126,7 @@ class Queue implements Stringable
      */
     public function __toString(): string
     {
-        return "Transacts in queue:<br />{$this->transacts}<br />Statistic:<br />{$this->statistic}<br />";
+        return "Transacts in queue:<br />{$this->transacts}<br /><br />{$this->statistic}<br />";
     }
 
     /**
@@ -138,9 +138,7 @@ class Queue implements Stringable
      */
     public function __call($method, $arguments)
     {
-        $arguments = empty($arguments) ? null : $arguments;
-
-        return $this->transacts->$method($arguments);
+        return $this->transacts->$method(...$arguments);
     }
 
 }
