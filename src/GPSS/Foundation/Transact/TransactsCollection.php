@@ -216,9 +216,7 @@ class TransactsCollection implements Stringable
      */
     public function __call($method, $arguments)
     {
-        $arguments = empty($arguments) ? null : $arguments;
-
-        return $this->collection->$method($arguments);
+        return $this->collection->$method(...$arguments);
     }
 
 }
