@@ -111,12 +111,12 @@ class Model implements Stringable
     /**
      * Run the simulation.
      *
-     * @param int $startTime    Initial simulation time
-     * @param int $endTime      Final simulation time
+     * @param int $endTime    Simulation time
+     * @return Model
      */
-    public function simulate(int $startTime, int $endTime)
+    public function simulate(int $endTime): Model
     {
-        $this->time = $startTime;
+        $this->time = 0;
 
         do {
 
@@ -125,6 +125,8 @@ class Model implements Stringable
             $this->phaseView();                     // двигаем транзакты
 
         } while ($this->time < $endTime);
+
+        return $this;
     }
 
     /**
@@ -241,7 +243,7 @@ class Model implements Stringable
      *
      * @return int    Current simulation time
      */
-    public function getTime()
+    public function getTime(): int
     {
         return $this->time;
     }
@@ -251,7 +253,7 @@ class Model implements Stringable
      *
      * @return array    Config
      */
-    public function getConfig()
+    public function getConfig(): array
     {
         return $this->config;
     }
