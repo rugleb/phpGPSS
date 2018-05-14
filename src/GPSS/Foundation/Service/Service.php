@@ -6,6 +6,7 @@ use GPSS\Support\Concerns\HasModel;
 use GPSS\Support\Concerns\HasNumber;
 use GPSS\Support\Contracts\Stringable;
 use GPSS\Foundation\Transact\Transact;
+use GPSS\Foundation\Transact\TransactsCollection;
 
 /**
  * The Service abstract base class.
@@ -36,6 +37,13 @@ abstract class Service implements Stringable
     protected $delayTime = 0;
 
     /**
+     * History of processed transacts.
+     *
+     * @var TransactsCollection
+     */
+    protected $story;
+
+    /**
      * Service constructor.
      *
      * @throws \Exception
@@ -44,6 +52,8 @@ abstract class Service implements Stringable
     {
         $this->number = null;
         $this->transact = null;
+
+        $this->setFreshStory();
     }
 
     /**
@@ -60,6 +70,30 @@ abstract class Service implements Stringable
      * @return int
      */
     abstract public function getDelayTime(): int;
+
+    /**
+     * Get service story.
+     *
+     * @return TransactsCollection
+     */
+    public function getStory(): TransactsCollection
+    {
+        return $this->story;
+    }
+
+    /**
+     * Set fresh service story.
+     *
+     * @return Service
+     *
+     * @throws \Exception
+     */
+    public function setFreshStory(): Service
+    {
+        $this->story = new TransactsCollection();
+
+        return $this;
+    }
 
     /**
      * Get processed transact.
@@ -157,6 +191,7 @@ abstract class Service implements Stringable
      */
     public function release(): Service
     {
+        $this->getStory()->push($this->getTransact());
         $this->forgetTransact();
 
         return $this;
@@ -204,7 +239,7 @@ abstract class Service implements Stringable
      */
     public function isBusy(): bool
     {
-        return $this->transact instanceof Transact;
+        return $this->getTransact() instanceof Transact;
     }
 
     /**
@@ -235,7 +270,7 @@ abstract class Service implements Stringable
      */
     public function __toString(): string
     {
-        return "Service #{$this->number}.<br />Current transact: {$this->transact}.<br />";
+        return "<u>Service {$this->number}</u><br /><br />Current transact: {$this->transact}<br /><br />Story:<br />{$this->story}";
     }
 
 }
