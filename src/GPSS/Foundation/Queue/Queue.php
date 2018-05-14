@@ -126,7 +126,7 @@ class Queue implements Stringable
      */
     public function __toString(): string
     {
-        return "Transacts in queue:<br />{$this->transacts}<br /><br />{$this->statistic}<br />";
+        return "Transacts in queue:<br />{$this->transacts}<br />{$this->statistic}";
     }
 
     /**

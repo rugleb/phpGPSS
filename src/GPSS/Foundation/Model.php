@@ -300,7 +300,7 @@ class Model implements Stringable
      */
     public function __toString(): string
     {
-        return "Time: {$this->time}.<br /><br />{$this->storage}" . $this->services->reduce(function ($string, Service $service) {
+        return "Time: {$this->time}<br /><br />{$this->storage}" . $this->services->reduce(function ($string, Service $service) {
             return $string . $service . '<br />';
             }, '');
     }

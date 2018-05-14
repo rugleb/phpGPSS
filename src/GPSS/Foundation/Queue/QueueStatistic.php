@@ -147,7 +147,7 @@ class QueueStatistic implements Stringable
      */
     public function __toString(): string
     {
-        return "Max queue length: {$this->queueMaxLength}.<br />Enters: {$this->enters}<br />Outs: {$this->outs}<br />";
+        return "Max queue length: {$this->queueMaxLength}<br /><br />Enters:<br />{$this->enters}<br />Outs:<br />{$this->outs}";
     }
 
 }
