@@ -51,6 +51,8 @@ class QueueStatistic implements Stringable
      *
      * @param Transact $transact
      * @return QueueStatistic
+     *
+     * @throws \Exception
      */
     public function enter(Transact $transact): QueueStatistic
     {
@@ -64,6 +66,8 @@ class QueueStatistic implements Stringable
      * Update queue max length.
      *
      * @return QueueStatistic
+     *
+     * @throws \Exception
      */
     protected function updateQueueMaxLength(): QueueStatistic
     {
@@ -76,12 +80,14 @@ class QueueStatistic implements Stringable
      * Get transacts list in the queue.
      *
      * @return TransactsCollection
+     * 
+     * @throws \Exception
      */
     public function transactsInQueue(): TransactsCollection
     {
-        return $this->enters->filter(function (Transact $transact) {
+        return new TransactsCollection($this->enters->filter(function (Transact $transact) {
             return $this->outs->has($transact);
-        });
+        }));
     }
 
     /**
