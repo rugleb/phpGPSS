@@ -55,6 +55,13 @@ abstract class Service implements Stringable
     abstract public function handle(Transact &$transact);
 
     /**
+     * Get delay time.
+     *
+     * @return int
+     */
+    abstract public function getDelayTime(): int;
+
+    /**
      * Get processed transact.
      *
      * @return Transact|null
@@ -97,29 +104,6 @@ abstract class Service implements Stringable
     public function hasTransact(): bool
     {
         return $this->transact instanceof Transact;
-    }
-
-    /**
-     * Get delay time.
-     *
-     * @return int
-     */
-    public function getDelayTime(): int
-    {
-        return $this->delayTime;
-    }
-
-    /**
-     * Set delay time.
-     *
-     * @param int $delayTime
-     * @return Service
-     */
-    public function setDelayTime(int $delayTime): Service
-    {
-        $this->delayTime = $delayTime;
-
-        return $this;
     }
 
     /**
