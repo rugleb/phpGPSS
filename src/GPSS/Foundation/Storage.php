@@ -150,11 +150,7 @@ class Storage implements Stringable
      */
     public function all(): TransactsCollection
     {
-        return $this->futureEventsList
-            ->concat($this->currentEventsList)
-            ->sortBy(function (Transact $transact) {
-                return $transact->getTime();
-            });
+        return $this->futureEventsList->concat($this->currentEventsList);
     }
 
     /**
@@ -168,9 +164,7 @@ class Storage implements Stringable
      */
     public function __call($method, $arguments)
     {
-        $arguments = empty($arguments) ? null : $arguments;
-
-        return $this->all()->$method($arguments);
+        return $this->all()->$method(...$arguments);
     }
 
     /**
@@ -180,7 +174,7 @@ class Storage implements Stringable
      */
     public function __toString(): string
     {
-        return "Current events list:<br />{$this->currentEventsList}<br/>Future events list:<br />{$this->futureEventsList}";
+        return "Current events list:<br />{$this->currentEventsList}<br/>Future events list:<br />{$this->futureEventsList}<br />";
     }
     
 }
