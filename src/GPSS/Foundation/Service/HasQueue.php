@@ -147,7 +147,7 @@ trait HasQueue
      */
     public function __toString(): string
     {
-        return parent::__toString() . "Queue:<br />{$this->queue}";
+        return parent::__toString() . "<br />{$this->queue}";
     }
 
 }
