@@ -14,10 +14,10 @@ trait HasModel
     /**
      * The Model instance.
      *
-     * @var Model
+     * @var Model|null
      */
-    protected $model;
-    
+    protected $model = null;
+
     /**
      * Get Model instance.
      *
