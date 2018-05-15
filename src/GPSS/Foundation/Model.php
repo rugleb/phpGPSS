@@ -11,6 +11,11 @@ use GPSS\Foundation\Service\ServicesCollection;
 /**
  * The Model abstract base class.
  *
+ * The model is central to the modeling of processes.
+ * It stores chains of current and future events in storage
+ * vite, transact generators and services that process these transacts.
+ *
+ * You can refer to the model as a Storage.
  * @mixin Storage
  *
  * Is part of the GPSS\Foundation package.
