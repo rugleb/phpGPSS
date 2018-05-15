@@ -24,7 +24,7 @@ Next, define a **Generator** that will generate new **Transacts** (in our case *
 use GPSS\Foundation\Generator;
 
 /**
- * Class CarGenerator.
+ * The CarGenerator class.
  *
  * @package App
  */
@@ -122,7 +122,7 @@ use GPSS\Foundation\Model;
 
 $config = [
     'map' => [
-        Car::class => RoadService::class
+        Car::class => RoadService::class,
     ],
     'services' => [
         RoadService::class,
