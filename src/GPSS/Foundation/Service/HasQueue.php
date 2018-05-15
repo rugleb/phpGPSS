@@ -67,7 +67,7 @@ trait HasQueue
      */
     public function setFreshQueue()
     {
-        $this->queue = new Queue();
+        $this->queue = Queue::make();
 
         return $this;
     }
@@ -77,12 +77,10 @@ trait HasQueue
      *
      * @param Transact $transact
      * @return Service
-     *
-     * @throws \Exception
      */
     public function queue(Transact $transact): Service
     {
-        $this->getQueue()->enterIfHasNot($transact);
+        $this->queue->enterIfHasNot($transact);
 
         return $this;
     }
@@ -95,7 +93,7 @@ trait HasQueue
      */
     public function depart(Transact $transact): Service
     {
-        $this->getQueue()->out($transact);
+        $this->queue->out($transact);
 
         return $this;
     }
@@ -109,14 +107,14 @@ trait HasQueue
     {
         // если в очереди нет ожадающих места транзактов,
         // то операция прошла безуспешно.
-        if ($this->getQueue()->isEmpty()) {
+        if ($this->queue->isEmpty()) {
             return false;
         }
 
         // поскольку в очереди есть транзакты ожидающие места,
         // то согласно принципу FIFO приоритет встраивается
         // в порядке прихода транзакта в очередь.
-        $transact = $this->getQueue()->first();
+        $transact = $this->queue->first();
 
         // соответственно выводим этот транзакт из очереди
         // и занимаем им устройство текущее устройство.

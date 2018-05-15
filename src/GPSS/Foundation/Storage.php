@@ -44,14 +44,12 @@ class Storage implements Stringable
 
     /**
      * TransactsStorage constructor.
-     *
-     * @throws \Exception
      */
     public function __construct()
     {
-        $this->story = new TransactsCollection();
-        $this->futureEventsList = new TransactsCollection();
-        $this->currentEventsList = new TransactsCollection();
+        $this->story = TransactsCollection::make();
+        $this->futureEventsList = TransactsCollection::make();
+        $this->currentEventsList = TransactsCollection::make();
     }
 
     /**
@@ -145,12 +143,20 @@ class Storage implements Stringable
      * Get all transacts collection.
      *
      * @return TransactsCollection
-     *
-     * @throws \Exception
      */
     public function all(): TransactsCollection
     {
         return $this->futureEventsList->concat($this->currentEventsList);
+    }
+
+    /**
+     * Make new storage.
+     *
+     * @return Storage
+     */
+    public static function make(): Storage
+    {
+        return new static;
     }
 
     /**
@@ -159,8 +165,6 @@ class Storage implements Stringable
      * @param callable $method    Method name
      * @param array $arguments    Arguments array
      * @return mixed
-     *
-     * @throws \Exception
      */
     public function __call($method, $arguments)
     {

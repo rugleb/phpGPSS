@@ -99,26 +99,29 @@ abstract class Generator
     public function makeTransact(): Transact
     {
         $time = $this->getTransactTime();           // время прихода нового транзакта
-        $name = $this->getTransactName();           // имя классаэкземпляра транзакта
         $number = $this->getTransactNumber();       // номер нового транзакта
+        $instance = $this->getTransactName();       // имя классаэкземпляра транзакта
 
         // после создания нового транзакта следует обновить время создания нового транзакта.
         // оно должно совпадать с временем прихода только что созданного транзакта.
         $this->setGenerateTime($time);
 
-        // возвращаем инициализированный транзакт.
-        return Transact::make($name)->setNumber($number)->setTime($time);
+        /**
+         * @var Transact $transact
+         */
+        $transact = new $instance;
+
+        return $transact->setNumber($number)->setTime($time);
     }
 
     /**
      * Make new generator.
      *
-     * @param string $generator
      * @return Generator
      */
-    public static function make(string $generator): Generator
+    public static function make(): Generator
     {
-        return new $generator;
+        return new static;
     }
 
 }

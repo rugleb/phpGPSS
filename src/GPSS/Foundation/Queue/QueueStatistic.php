@@ -37,12 +37,21 @@ class QueueStatistic implements Stringable
     protected $outs;
 
     /**
+     * Queue instance.
+     *
+     * @var Queue
+     */
+    protected $queue;
+
+    /**
      * QueueStatistic constructor.
      *
-     * @throws \Exception
+     * @param Queue $queue
      */
-    public function __construct()
+    public function __construct(Queue &$queue)
     {
+        $this->queue = $queue;
+
         $this->clear();
     }
 
@@ -51,8 +60,6 @@ class QueueStatistic implements Stringable
      *
      * @param Transact $transact
      * @return QueueStatistic
-     *
-     * @throws \Exception
      */
     public function enter(Transact $transact): QueueStatistic
     {
@@ -66,28 +73,12 @@ class QueueStatistic implements Stringable
      * Update queue max length.
      *
      * @return QueueStatistic
-     *
-     * @throws \Exception
      */
     protected function updateQueueMaxLength(): QueueStatistic
     {
-        $this->queueMaxLength = max($this->transactsInQueue()->count(), $this->queueMaxLength);
+        $this->queueMaxLength = max($this->queue->count(), $this->queueMaxLength);
 
         return $this;
-    }
-
-    /**
-     * Get transacts list in the queue.
-     *
-     * @return TransactsCollection
-     * 
-     * @throws \Exception
-     */
-    public function transactsInQueue(): TransactsCollection
-    {
-        return new TransactsCollection($this->enters->filter(function (Transact $transact) {
-            return $this->outs->has($transact);
-        }));
     }
 
     /**
@@ -107,15 +98,13 @@ class QueueStatistic implements Stringable
      * Clear statistic information.
      *
      * @return QueueStatistic
-     *
-     * @throws \Exception
      */
     public function clear(): QueueStatistic
     {
         $this->queueMaxLength = 0;
 
-        $this->outs = new TransactsCollection();
-        $this->enters = new TransactsCollection();
+        $this->outs = TransactsCollection::make();
+        $this->enters = TransactsCollection::make();
 
         return $this;
     }
@@ -138,6 +127,17 @@ class QueueStatistic implements Stringable
     public function getOuts(): TransactsCollection
     {
         return $this->outs;
+    }
+
+    /**
+     * Make new queue statistic.
+     *
+     * @param Queue $queue
+     * @return QueueStatistic
+     */
+    public static function make(Queue &$queue): QueueStatistic
+    {
+        return new static ($queue);
     }
 
     /**

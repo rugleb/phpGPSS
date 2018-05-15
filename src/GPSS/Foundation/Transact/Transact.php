@@ -2,8 +2,7 @@
 
 namespace GPSS\Foundation\Transact;
 
-use GPSS\Support\Concerns\HasNumber;
-use GPSS\Support\Contracts\Stringable;
+use GPSS\Foundation\Numerable\Numerable;
 use Tightenco\Collect\Contracts\Support\Arrayable;
 
 /**
@@ -12,33 +11,21 @@ use Tightenco\Collect\Contracts\Support\Arrayable;
  * Is part of the GPSS\Foundation package.
  * @package GPSS\Foundation\Transact
  */
-abstract class Transact implements Arrayable, Stringable
+abstract class Transact extends Numerable implements Arrayable
 {
-    use HasNumber;
-
     /**
      * Transact's time of arrival.
      *
      * @var int
      */
-    protected $time;
+    protected $time = -1;
 
     /**
      * Service class name.
      *
      * @var string
      */
-    protected $handler;
-
-    /**
-     * Transact constructor.
-     */
-    public function __construct()
-    {
-        $this->time = null;
-        $this->number = null;
-        $this->handler = null;
-    }
+    protected $handler = '';
 
     /**
      * Set service class name.
@@ -58,7 +45,7 @@ abstract class Transact implements Arrayable, Stringable
      *
      * @return string    Service name.
      */
-    public function getHandler()
+    public function getHandler(): string
     {
         return $this->handler;
     }
@@ -70,7 +57,7 @@ abstract class Transact implements Arrayable, Stringable
      */
     public function hasHandler(): bool
     {
-        return is_string($this->handler);
+        return is_string($this->handler) && class_exists($this->handler);
     }
 
     /**
@@ -78,7 +65,7 @@ abstract class Transact implements Arrayable, Stringable
      *
      * @return int
      */
-    public function getTime()
+    public function getTime(): int
     {
         return $this->time;
     }
@@ -89,7 +76,7 @@ abstract class Transact implements Arrayable, Stringable
      * @param int $time    Time of arrival
      * @return Transact
      */
-    public function setTime(int $time)
+    public function setTime(int $time): Transact
     {
         $this->time = $time;
 
@@ -101,23 +88,22 @@ abstract class Transact implements Arrayable, Stringable
      *
      * @return array
      */
-    public function toArray()
+    public function toArray(): array
     {
         return [
-            $this->number,
-            $this->time
+            $this->getNumber(),
+            $this->getTime()
         ];
     }
 
     /**
      * Make new transact.
      *
-     * @param string $transactName    Transact name
      * @return Transact
      */
-    public static function make(string $transactName): Transact
+    public static function make(): Transact
     {
-        return new $transactName;
+        return new static;
     }
 
     /**
@@ -127,7 +113,7 @@ abstract class Transact implements Arrayable, Stringable
      */
     public function __toString(): string
     {
-        return "[{$this->number}, {$this->time}]";
+        return "[{$this->getNumber()}, {$this->getTime()}]";
     }
 
 }

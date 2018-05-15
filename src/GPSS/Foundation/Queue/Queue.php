@@ -34,13 +34,11 @@ class Queue implements Stringable
 
     /**
      * Queue constructor.
-     *
-     * @throws \Exception
      */
     public function __construct()
     {
-        $this->statistic = new QueueStatistic();
-        $this->transacts = new TransactsCollection();
+        $this->statistic = QueueStatistic::make($this);
+        $this->transacts = TransactsCollection::make();
     }
 
     /**
@@ -48,8 +46,6 @@ class Queue implements Stringable
      *
      * @param Transact $transact
      * @return Queue
-     *
-     * @throws \Exception
      */
     public function enter(Transact $transact): Queue
     {
@@ -64,8 +60,6 @@ class Queue implements Stringable
      *
      * @param Transact $transact
      * @return Queue
-     *
-     * @throws \Exception
      */
     public function enterIfHasNot(Transact $transact): Queue
     {
@@ -111,19 +105,6 @@ class Queue implements Stringable
     }
 
     /**
-     * Set queue statistic.
-     *
-     * @param QueueStatistic $statistic
-     * @return Queue
-     */
-    public function setStatistic(QueueStatistic &$statistic): Queue
-    {
-        $this->statistic = $statistic;
-
-        return $this;
-    }
-
-    /**
      * Get the instance as a string.
      *
      * @return string
@@ -131,6 +112,16 @@ class Queue implements Stringable
     public function __toString(): string
     {
         return "Transacts in queue:<br />{$this->transacts}<br />{$this->statistic}";
+    }
+
+    /**
+     * Make new queue.
+     *
+     * @return Queue
+     */
+    public static function make(): Queue
+    {
+        return new static;
     }
 
     /**

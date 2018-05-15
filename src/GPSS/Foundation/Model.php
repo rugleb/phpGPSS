@@ -6,6 +6,7 @@ use GPSS\Foundation\Service\Service;
 use GPSS\Support\Contracts\Stringable;
 use GPSS\Foundation\Transact\Transact;
 use Tightenco\Collect\Support\Collection;
+use GPSS\Foundation\Service\ServicesCollection;
 
 /**
  * The Model abstract base class.
@@ -22,7 +23,7 @@ class Model implements Stringable
      *
      * @var int
      */
-    protected $time;
+    protected $time = 0;
 
     /**
      * The Model configuration.
@@ -41,7 +42,7 @@ class Model implements Stringable
     /**
      * Services collection.
      *
-     * @var Collection
+     * @var ServicesCollection
      */
     protected $services;
 
@@ -56,14 +57,10 @@ class Model implements Stringable
      * Model constructor.
      *
      * @param array $config    The model config.
-     *
-     * @throws \Exception
      */
     public function __construct(array $config)
     {
-        $this->time = null;
-
-        $this->storage = new Storage;
+        $this->storage = Storage::make();
 
         $this->configure($config);
     }
@@ -91,9 +88,17 @@ class Model implements Stringable
      */
     protected function makeServices($services): void
     {
-        $this->services = collect($services)->map(function (string $service, $index) {
-            return Service::make($service)->setNumber($index)->setModel($this);
+        $services = collect($services)->map(function (string $class, $index) {
+
+            /**
+             * @var Service $service
+             */
+            $service = new $class;
+
+            return $service->setNumber($index)->setModel($this);
         });
+
+        $this->services = ServicesCollection::make($services);
     }
 
     /**
@@ -103,8 +108,14 @@ class Model implements Stringable
      */
     protected function makeGenerators($generators): void
     {
-        $this->generators = collect($generators)->map(function (string $generator) {
-            return Generator::make($generator)->setModel($this);
+        $this->generators = collect($generators)->map(function (string $class) {
+
+            /**
+             * @var Generator $generator
+             */
+            $generator = new $class;
+
+            return $generator->setModel($this);
         });
     }
 
@@ -137,11 +148,11 @@ class Model implements Stringable
         // интерпретатор просматривает список БС и устанавливает таймер
         // в ближайший запланированный момент движения транзакта,
         // находящийся в начале списка БС.
-        $this->time = $this->storage->getFutures()->getTimesCollection()->min();
+        $this->time = $this->getFutures()->getTimesCollection()->min();
 
         // затем перемещаем транзакты из списка БС с запланированным
         // временем движения в список ТС.
-        $this->storage->getFutures()->each(function (Transact $transact) {
+        $this->getFutures()->each(function (Transact $transact) {
             if ($transact->getTime() === $this->getTime()) {
                 $this->moveToCurrents($transact);
             }
@@ -190,7 +201,9 @@ class Model implements Stringable
                 $transact = $generator->makeTransact();
 
                 // далее устанавливаем ему обработчик и добавляем в хранилище
-                $this->identifyTransactWithService($transact)->storage->add($transact);
+                $this->identifyTransactWithService($transact);
+                $this->storage->add($transact);
+
             }
 
         });
@@ -300,9 +313,7 @@ class Model implements Stringable
      */
     public function __toString(): string
     {
-        return "Time: {$this->time}<br /><br />{$this->storage}" . $this->services->reduce(function ($string, Service $service) {
-            return $string . $service . '<br />';
-            }, '');
+        return "Time: {$this->time}<br /><br />{$this->storage}{$this->services}";
     }
 
 }

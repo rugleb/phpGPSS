@@ -3,9 +3,9 @@
 namespace GPSS\Foundation\Service;
 
 use GPSS\Support\Concerns\HasModel;
-use GPSS\Support\Concerns\HasNumber;
 use GPSS\Support\Contracts\Stringable;
 use GPSS\Foundation\Transact\Transact;
+use GPSS\Foundation\Numerable\Numerable;
 use GPSS\Foundation\Transact\TransactsCollection;
 
 /**
@@ -17,24 +17,16 @@ use GPSS\Foundation\Transact\TransactsCollection;
  * Is part of the GPSS\Foundation package.
  * @package GPSS\Foundation
  */
-abstract class Service implements Stringable
+abstract class Service extends Numerable implements Stringable
 {
-    use HasModel,
-        HasNumber;
+    use HasModel;
 
     /**
      * Serviced transact.
      *
      * @var Transact
      */
-    protected $transact;
-
-    /**
-     * Transact processing time.
-     *
-     * @var int
-     */
-    protected $delayTime = 0;
+    protected $transact = null;
 
     /**
      * History of processed transacts.
@@ -45,14 +37,9 @@ abstract class Service implements Stringable
 
     /**
      * Service constructor.
-     *
-     * @throws \Exception
      */
     public function __construct()
     {
-        $this->number = null;
-        $this->transact = null;
-
         $this->setFreshStory();
     }
 
@@ -85,12 +72,10 @@ abstract class Service implements Stringable
      * Set fresh service story.
      *
      * @return Service
-     *
-     * @throws \Exception
      */
     public function setFreshStory(): Service
     {
-        $this->story = new TransactsCollection();
+        $this->story = TransactsCollection::make();
 
         return $this;
     }
@@ -151,7 +136,7 @@ abstract class Service implements Stringable
         // определяем время выхода транзакта из очереди как
         // сумма текущего модельного времения и ремени
         // обработки транзакта в текущем блоке.
-        $timeOut = $this->getModel()->getTime() + $this->getDelayTime();
+        $timeOut = $this->model->getTime() + $this->getDelayTime();
 
         // обновляем время выхода в транзакте
         $transact->setTime($timeOut);
@@ -168,7 +153,7 @@ abstract class Service implements Stringable
     public function advance(Transact &$transact): Service
     {
         $this->setTimeOut($transact);
-        $this->getModel()->moveToFutures($transact);
+        $this->model->moveToFutures($transact);
 
         return $this;
     }
@@ -191,7 +176,7 @@ abstract class Service implements Stringable
      */
     public function release(): Service
     {
-        $this->getStory()->push($this->getTransact());
+        $this->story->push($this->transact);
         $this->forgetTransact();
 
         return $this;
@@ -205,7 +190,7 @@ abstract class Service implements Stringable
      */
     public function terminate(Transact $transact): Service
     {
-        $this->getModel()->getStorage()->remove($transact);
+        $this->model->remove($transact);
 
         return $this;
     }
@@ -218,7 +203,7 @@ abstract class Service implements Stringable
      */
     public function isProcessing(Transact $transact): bool
     {
-        return $this->hasTransact() && $this->getTransact()->getNumber() === $transact->getNumber();
+        return $this->hasTransact() && $this->transact->getNumber() === $transact->getNumber();
     }
 
     /**
@@ -229,7 +214,7 @@ abstract class Service implements Stringable
      */
     public function canRelease(Transact $transact): bool
     {
-        return $this->getModel()->getTime() === $transact->getTime();
+        return $this->model->getTime() === $transact->getTime();
     }
 
     /**
@@ -239,7 +224,7 @@ abstract class Service implements Stringable
      */
     public function isBusy(): bool
     {
-        return $this->getTransact() instanceof Transact;
+        return $this->transact instanceof Transact;
     }
 
     /**
@@ -255,12 +240,11 @@ abstract class Service implements Stringable
     /**
      * Make new service.
      *
-     * @param string $service    Service name
      * @return Service
      */
-    public static function make(string $service): Service
+    public static function make(): Service
     {
-        return new $service;
+        return new static;
     }
 
     /**
