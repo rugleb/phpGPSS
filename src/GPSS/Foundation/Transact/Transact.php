@@ -8,6 +8,9 @@ use Tightenco\Collect\Contracts\Support\Arrayable;
 /**
  * The Transact abstract base class.
  *
+ * A transact is an entity that enters the processing of a service,
+ * for example: a car on the road or a shopper.
+ *
  * Is part of the GPSS\Foundation package.
  * @package GPSS\Foundation\Transact
  */
