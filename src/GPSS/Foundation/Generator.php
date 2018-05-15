@@ -8,6 +8,10 @@ use GPSS\Foundation\Transact\Transact;
 /**
  * The Generator abstract base class.
  *
+ * The generator determines the time and period for the application to appear in the model.
+ * The object instance task is to create a new transact after a specified
+ * time interval and enter it into the Model.
+ *
  * Is part of the GPSS\Foundation package.
  * @package GPSS\Foundation
  */
