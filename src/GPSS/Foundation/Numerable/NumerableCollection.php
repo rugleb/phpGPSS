@@ -8,6 +8,11 @@ use Tightenco\Collect\Support\Collection as BaseCollection;
 /**
  * The Numerable NumerableCollection base class.
  *
+ * This class is a descendant of the base Collection class,
+ * whose elements implement this NumerableInterface,
+ * like transaction, services and others.
+ *
+ * Is part of the GPSS\Foundation package.
  * @package GPSS\Foundation\NumerableCollection
  */
 class NumerableCollection extends BaseCollection implements Stringable

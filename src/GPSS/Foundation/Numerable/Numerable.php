@@ -7,6 +7,7 @@ use GPSS\Support\Contracts\Stringable;
 /**
  * The Numerable abstract base class.
  *
+ * Is part of the GPSS\Foundation package.
  * @package GPSS\Foundation\NumerableCollection
  */
 abstract class Numerable implements NumerableInterface, Stringable
