@@ -22,9 +22,13 @@
     },
     "autoload": {
         "psr-4": {
-            "GPSS\\": "src/GPSS/",
-            "App\\": "src/App/"
+            "GPSS\\": "src/GPSS/"
         }
+    },
+    "autoload-dev": {
+        "psr-4": {
+            "App\\": "src/App/"
+         }
     },
     "minimum-stability": "dev",
     "prefer-stable": true
