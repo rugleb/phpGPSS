@@ -28,7 +28,7 @@
     "autoload-dev": {
         "psr-4": {
             "App\\": "src/App/"
-         }
+        }
     },
     "minimum-stability": "dev",
     "prefer-stable": true
