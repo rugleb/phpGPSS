@@ -6,7 +6,9 @@ use GPSS\Foundation\Model;
 
 /**
  * The HasModel trait.
+ * This trait extends the components that need to reference the Model instance.
  *
+ * Is part of the GPSS\Foundation package.
  * @package src\GPSS\Support\Concerns
  */
 trait HasModel
@@ -42,7 +44,7 @@ trait HasModel
     }
 
     /**
-     * Determines if the model instance is installed.
+     * Determines if the Model instance is installed.
      *
      * @return bool
      */
