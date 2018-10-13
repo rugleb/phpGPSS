@@ -1,6 +1,6 @@
 {
     "name": "rugleb/phpgpss",
-    "description": "Modeling of control systems.",
+    "description": "Modeling of control systems",
     "keywords": ["rugleb", "gpss", "modeling", "simulation", "imitation"],
     "license": "MIT",
     "type": "library",
